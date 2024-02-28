@@ -1,0 +1,6 @@
+All the services which our app consumes
+
+like :
+ api,
+ some data services,
+ golbal state management (redux, flux, recoil).

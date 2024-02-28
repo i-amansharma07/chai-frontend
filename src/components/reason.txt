@@ -1,0 +1,8 @@
+This Folder will have all the ui parts/components that we use often times while building the app
+So we store them in this isolated folder
+
+component -----------> Native component (standalone don't require other component)
+   |
+   |
+   |
+    -----------------> General Component (can be reusable but uses other component inside it)

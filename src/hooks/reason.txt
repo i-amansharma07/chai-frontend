@@ -1,0 +1,4 @@
+This file will contain all the custom hooks that we write in our app
+like :
+ isLoggedin : This can return true or false depends upon the user is loggedin or not.
+ useAuth : This can give us the userInfo by fetching the value from backend or already saved one.

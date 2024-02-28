@@ -1,0 +1,4 @@
+This Folder is used to store all the root level pages to which user can go to are stored and written
+like : Login, register, Dashboard etc.. pages
+
+All the pages to which user can go.
