@@ -1,0 +1,1 @@
+In our App there are two routes like the flow where unAuthorised user can visit called Open routes and where a authorised or loggedin user can visit called protected routes. 
