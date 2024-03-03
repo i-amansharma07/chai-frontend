@@ -17,7 +17,6 @@ const LoginPage = () => {
       email  : data.email,
       password : data.password
     }
-    // console.log(payload);
     const res = await loginUser(payload)
     if(res.success){
       setUser(res.data.user)
