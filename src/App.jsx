@@ -1,11 +1,48 @@
-import openRoutes from "./routes/openRoutes";
-import protectedRoutes from "./routes/protectedRoutes";
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import { UserContext } from "./hooks/useAuth";
+import useFetch from "./hooks/useFetch";
+import { getUserInfo } from "./services/api/account";
 
-function App() {
-  const isAuthenticated = false;
-  const Routes = isAuthenticated ? protectedRoutes : openRoutes;
+const App = ({ openRoutes, protectedRoutes }) => {
+  const [user, setUser] = useState(false);
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
+  const [refreshToken, setRefreshToken] = useState(null);
 
-  return <Routes />;
-}
+  useEffect(() => {
+    localStorage.setItem('accessToken',accessToken)
+    localStorage.setItem('refreshToken',refreshToken)
 
-export default App;
+    getUserInfo(accessToken).then((res) => {
+      setUser(res)
+    })
+
+  }, [accessToken]);
+
+  function logout() {
+    localStorage.setItem("accessToken",'');
+    localStorage.setItem("refreshToken",'');
+    setToken("");
+  }
+
+
+  const Routes = user ? protectedRoutes : openRoutes;
+
+  return (
+    <React.StrictMode>
+      <UserContext.Provider value={{ user, setUser, accessToken, 
+        setAccessToken, refreshToken, setRefreshToken, logout }}>
+        <Router>
+          <Routes />
+        </Router>
+      </UserContext.Provider>
+    </React.StrictMode>
+  );
+};
+
+export const initApp = ({ openRoutes, protectedRoutes }) => {
+  ReactDOM.createRoot(document.getElementById("root")).render(
+    <App openRoutes={openRoutes} protectedRoutes={protectedRoutes} />
+  );
+};

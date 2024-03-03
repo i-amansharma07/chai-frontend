@@ -1,6 +1,11 @@
 import { useForm } from "react-hook-form";
+import { loginUser } from "../../services/api/account";
+import useAuth from '../../hooks/useAuth'
+import { useNavigate } from "react-router";
 
 const LoginPage = () => {
+  const navigate = useNavigate()
+  const {setUser, setAccessToken, setRefreshToken} = useAuth()
   const {
     register,
     handleSubmit,
@@ -8,17 +13,27 @@ const LoginPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+    const payload = {
+      email  : data.email,
+      password : data.password
+    }
+    // console.log(payload);
+    const res = await loginUser(payload)
+    if(res.success){
+      setUser(res.data.user)
+      setAccessToken(res.data.accessToken)
+      setRefreshToken(res.data.refreshToken)
+      navigate('/')
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center gap-8 p-20">
         <div className="flex flex-col">
-          <label>Email / Userame</label>
+          <label>Email</label>
           <input
-            {...register("email_username", {
+            {...register("email", {
               required: "email or userName can't be empty",
             })}
             type="text"
@@ -41,7 +56,7 @@ const LoginPage = () => {
                 message: "Password must contain atleast 8 characters",
               },
             })}
-            type="password"
+            type="text"
             className="border-black-500 w-[200px] rounded-md border-2 p-2 text-sm"
             placeholder="Enter Password"
           />
