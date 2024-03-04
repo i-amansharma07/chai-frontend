@@ -7,11 +7,16 @@ function useFetch(request) {
       method: method || 'GET', // default to 'GET' if method is not provided
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+token
+        
       },
       body: body ? JSON.stringify(body) : undefined,
     };
   
+
+    if(token){
+      options.headers['Authorization'] = 'Bearer '+token
+    }
+
     return fetch(defaultUrl+url, options)
       .then(response => {
         if (!response.ok) {
