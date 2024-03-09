@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { loginUser } from "../../services/api/account";
 import useAuth from '../../hooks/useAuth'
 import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -18,11 +19,12 @@ const LoginPage = () => {
       password : data.password
     }
     const res = await loginUser(payload)
-    if(res.success){
+    if(res?.success){
       setUser(res.data.user)
       setAccessToken(res.data.accessToken)
       setRefreshToken(res.data.refreshToken)
       navigate('/')
+      toast.success('Logged in successfully')
     }
   };
 
