@@ -11,7 +11,6 @@ export function registerUser(body){
 }
 
 
-
 export function loginUser(body){
     return useFetch({
         url : '/users/login',
@@ -20,9 +19,14 @@ export function loginUser(body){
     })
 }
 
-export function getUserInfo(token) {
+export function getUserInfo() {
     return useFetch({
         url : '/users/get_current_user',
-        token
+    })
+}
+export function logoutUser() {
+    return useFetch({
+        url : '/users/logout',
+        method : 'POST'
     })
 }

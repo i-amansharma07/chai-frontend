@@ -5,9 +5,11 @@ import { UserContext } from "./hooks/useAuth";
 import { getUserInfo } from "./services/api/account";
 import Header from "./pages/protected/Header";
 import { Toaster } from "react-hot-toast";
+import Loader from "./components/Loader";
 
 const App = ({ openRoutes, protectedRoutes }) => {
   const [user, setUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem("accessToken")
   );
@@ -19,15 +21,24 @@ const App = ({ openRoutes, protectedRoutes }) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
 
-    getUserInfo(accessToken).then((res) => {
-      setUser(res.data.user);
+    getUserInfo().then((res) => {
+      setIsLoading(false);
+      setUser(res?.data.user)
     });
   }, [accessToken]);
 
+  if (isLoading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
   function logout() {
-    localStorage.setItem("accessToken", "");
-    localStorage.setItem("refreshToken", "");
-    setToken("");
+    localStorage.setItem("accessToken", null);
+    localStorage.setItem("refreshToken", null);
+    setAccessToken("");
   }
 
   const Routes = user ? protectedRoutes : openRoutes;

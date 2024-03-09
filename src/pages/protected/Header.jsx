@@ -10,6 +10,7 @@ const Header = () => {
           <Link to={'/profile'}><h1 className={pathname === '/profile' && 'text-yellow-300'}>Profile</h1></Link> 
           <Link to={'/password'}><h1 className={pathname === '/password' && 'text-yellow-300'}>Change Password</h1></Link> 
           <Link to={'/update-info'}><h1 className={pathname === '/update-info' && 'text-yellow-300'}>Update Profile</h1></Link> 
+          <Link to={'/logout'}><h1 className={pathname === '/logout' && 'text-yellow-300'}>Logout</h1></Link> 
         </div>
       </div>
   )

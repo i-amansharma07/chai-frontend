@@ -4,7 +4,6 @@ import ParentLayout from "../../components/ParentLayout";
 
 const Profile = () => {
   const { user } = useAuth();
-console.log(user);
   return (
     <ParentLayout>
       <div className="flex flex-col">
