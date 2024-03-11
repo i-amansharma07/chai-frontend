@@ -3,6 +3,9 @@ import { loginUser } from "../../services/api/account";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { InputTextField } from "../../components/FormFields";
+import Button from "../../components/ui/Button";
+import getValidation from "../../utils/validations";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -31,57 +34,27 @@ const LoginPage = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center gap-8 p-20">
-        <div className="flex flex-col">
-          <label>Email</label>
-          <input
-            {...register("email", {
-              required: "Email is required",
-              validate: (value) => {
-                if (!value.includes("@")) {
-                  return "Email must contain @";
-                }
-                return true; 
-              },
-            })}
-            type="text"
-            className="border-black-500 w-[200px] rounded-md border-2 p-2 text-sm"
-            placeholder="Enter Email"
-          />
-          {errors?.email && (
-            <span className="text-sm text-red-500">
-              {errors.email?.message}
-            </span>
-          )}
-        </div>
-        <div className="flex flex-col">
-          <label>Password</label>
-          <input
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 8,
-                message: "Password must contain atleast 8 characters",
-              },
-            })}
-            type="text"
-            className="border-black-500 w-[200px] rounded-md border-2 p-2 text-sm"
-            placeholder="Enter Password"
-          />
-          {errors.password && (
-            <span className="text-sm text-red-500">
-              {errors.password.message}
-            </span>
-          )}
-        </div>
-
-        <button
-          className={`sm rounded-md border-2 border-blue-800 px-2 py-1 text-sm text-white ${
-            isSubmitting ? "bg-red-600" : "bg-green-600"
-          }`}
-          type="submit"
-        >
-          {isSubmitting ? "Submitting" : "Submit"}
-        </button>
+        <InputTextField
+          type="text"
+          required
+          errors={errors?.email}
+          title="Email"
+          placeholder="Enter mail"
+          validation={{
+            ...register("email", getValidation("email")),
+          }}
+        />
+        <InputTextField
+          type="password"
+          required
+          errors={errors?.password}
+          title="Password"
+          placeholder="Enter Password"
+          validation={{ ...register("password", getValidation("pass")) }}
+        />
+        <Button type="submit" isSubmitting={isSubmitting}>
+          Login
+        </Button>
       </div>
     </form>
   );

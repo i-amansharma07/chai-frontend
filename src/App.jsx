@@ -21,7 +21,7 @@ const App = ({ openRoutes, protectedRoutes }) => {
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
 
-    getUserInfo().then((res) => {
+    getUserInfo().then((res) => {             
       setIsLoading(false);
       setUser(res?.data.user)
     });
