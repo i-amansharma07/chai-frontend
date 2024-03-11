@@ -18,6 +18,13 @@ export function loginUser(body){
         body
     })
 }
+export function otpValidation(body){
+    return useFetch({
+        url : '/users/verify_otp',
+        method : 'POST',
+        body
+    })
+}
 
 export function getUserInfo() {
     return useFetch({

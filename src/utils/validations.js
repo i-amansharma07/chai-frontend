@@ -17,5 +17,12 @@ export default function getValidation(type){
               message: "Enter atleast 8 chars",
             },
           }
+    }else if(type === 'otp'){
+        return {
+            required: "Otp is required",
+            validate : (value) => {
+              return value.length === 5 || "otp must have 5 digits"
+            }
+          }
     }
 }
