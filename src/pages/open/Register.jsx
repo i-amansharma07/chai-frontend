@@ -3,9 +3,12 @@ import { useState } from "react";
 import { registerUser } from "../../services/api/account";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { InputTextField, ImageInputField } from "../../components/FormFields";
+import Button from "../../components/ui/Button";
+import getValidation from "../../utils/validations";
 
 const Register = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [avatarImage, setAvatarImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const {
@@ -15,24 +18,21 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = async (data, e) => {
- 
     const formData = new FormData();
 
-      formData.append('userName', data.userName);
-      formData.append('fullName', data.fullName);
-      formData.append('email', data.email);
-      formData.append('password', data.password);
-      formData.append('avatar',data.avatar[0]);
-      formData.append('coverImage', data.coverImage[0] ?? null);
-
-
+    formData.append("userName", data.userName);
+    formData.append("fullName", data.fullName);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    formData.append("avatar", data.avatar[0]);
+    formData.append("coverImage", data.coverImage[0] ?? null);
 
     const res = await registerUser(formData);
-    if(res?.success){
-      navigate('/login')
-      toast.success('User Registered Successfully, please Login')
-    }else{
-      toast.error('Error while creating user')
+    if (res?.success) {
+      navigate("/login");
+      toast.success("User Registered Successfully, please Login");
+    } else {
+      toast.error("Error while creating user");
     }
   };
 
@@ -53,91 +53,54 @@ const Register = () => {
     }
   };
 
+
+
   return (
-    <form  onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col items-center gap-8 p-20">
         <div className="grid grid-cols-2 gap-10">
-          <div className="flex flex-col">
-            <label>Username</label>
-            <input
-              {...register("userName", {
-                required: "Username is required",
-                validate: (value) => {
-                  if (value.includes(" ")) {
-                    return "Username shoul't have white space";
-                  }
-                  return true;
-                },
-              })}
-              type="text"
-              className="border-black-500 w-[200px] rounded-md border-2 p-2 text-sm"
-              placeholder="Enter UserName"
-            />
-            {errors?.userName && (
-              <span className="text-sm text-red-500">
-                {errors.userName.message}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col">
-            <label>Full Name</label>
-            <input
-              {...register("fullName", {
-                required: "Full Name is required",
-              })}
-              type="text"
-              className="border-black-500 w-[200px] rounded-md border-2 p-2 text-sm"
-              placeholder="Enter Password"
-            />
-            {errors?.fullName && (
-              <span className="text-sm text-red-500">
-                {errors.fullName.message}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col">
-            <label>Email</label>
-            <input
-              {...register("email", {
-                required: "Email is required",
-                validate: (value) => {
-                  //custom validation
-                  if (!value.includes("@")) {
-                    return "Email must contain @"; // returning message is like returning error
-                  }
-                  return true; // this means no error found
-                },
-              })}
-              type="text"
-              className="border-black-500 w-[200px] rounded-md border-2 p-2 text-sm"
-              placeholder="Enter Email"
-            />
-            {errors?.email && (
-              <span className="text-sm text-red-500">
-                {errors.email?.message}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col">
-            <label>Password</label>
-            <input
-              {...register("password", {
-                required: "password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be greater than 8 characters",
-                },
-              })}
-              type="password"
-              className="border-black-500 w-[200px] rounded-md border-2 p-2 text-sm"
-              placeholder="Enter Password"
-            />
-            {errors?.password && (
-              <span className="text-sm text-red-500">
-                {errors.password?.message}
-              </span>
-            )}
-          </div>
+          <InputTextField
+            type="text"
+            required
+            errors={errors?.userName}
+            title="UserName"
+            placeholder="Enter UserName"
+            validation={{
+              ...register("userName", getValidation("userName")),
+            }}
+          />
+
+          <InputTextField
+            type="text"
+            required
+            errors={errors?.fullName}
+            title="Full Name"
+            placeholder="Enter Full Name"
+            validation={{
+              ...register("fullName", getValidation("fullName")),
+            }}
+          />
+
+          <InputTextField
+            type="text"
+            required
+            errors={errors?.email}
+            title="Email"
+            placeholder="Enter mail"
+            validation={{
+              ...register("email", getValidation("email")),
+            }}
+          />
+
+          <InputTextField
+            type="password"
+            required
+            errors={errors?.password}
+            title="Password"
+            placeholder="Enter Password"
+            validation={{ ...register("password", getValidation("pass")) }}
+          />
+
           <div className="flex flex-col">
             <label>Avatar Image</label>
             <input
@@ -164,6 +127,17 @@ const Register = () => {
               </div>
             )}
           </div>
+
+
+          {/* <ImageInputField 
+          title="Avatar Image"
+          required
+          errors={errors?.avatar}
+          handleChange={handleAvatarImageChange}
+          preview={avatarImage}
+          validation={{...register("avatar",getValidation("avatar"))}}
+          /> */}
+
           <div className="flex flex-col">
             <label>Cover Image</label>
             <input
